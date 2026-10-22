@@ -35,8 +35,8 @@ export function getAllPosts(): PostMeta[] {
   return readdirSync(BLOG_DIR)
     .filter((f) => f.endsWith(".mdx"))
     .map((f) => {
-      const { content: _content, ...meta } = parse(f);
-      return meta;
+      const { slug, title, date, summary, relatedProduct } = parse(f);
+      return { slug, title, date, summary, relatedProduct };
     })
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
