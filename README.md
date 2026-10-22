@@ -22,7 +22,7 @@ role (webhook, seed script, Supabase dashboard); `anon`/`authenticated` have sel
 
 ## Local setup
 
-Prerequisites: Node 22 (Node 20 works but Supabase warns), Docker (for the local Supabase
+Prerequisites: Node 22 (`package.json` pins `22.x`, which Vercel also uses), Docker (for the local Supabase
 stack), and the [Stripe CLI](https://docs.stripe.com/stripe-cli).
 
 ```bash
@@ -54,6 +54,9 @@ npx supabase db push
 ```bash
 npm run seed
 ```
+
+On Node 20, run `NODE_OPTIONS=--experimental-websocket npm run seed` instead: supabase-js needs
+the global `WebSocket` that Node 22 provides.
 
 Upserts 3 live sample products (one toolkit, one course, one agent) and uploads their sample
 files from `supabase/seed-files` to the private `product-files` bucket. Safe to re-run. The 2
