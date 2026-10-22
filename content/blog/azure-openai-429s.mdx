@@ -1,0 +1,40 @@
+---
+title: "Why your Azure OpenAI app keeps hitting 429s (and how to fix it)"
+date: "2026-10-15"
+summary: "Rate limits on Azure OpenAI are per deployment, per region, and measured in tokens. Here's how to stop the 429 storm."
+relatedProduct: "azure-openai-in-production"
+---
+
+## The problem
+
+Your prototype worked fine. Then real traffic arrived and the logs filled with
+`429 Too Many Requests`. Retries made it worse, latency spiked, and the dashboard
+shows you're nowhere near your "quota."
+
+Azure OpenAI enforces **tokens-per-minute (TPM)** and **requests-per-minute (RPM)**
+limits *per deployment*. A single long prompt can burn a minute's budget in one call,
+and the limit is evaluated over short windows, not the whole minute.
+
+## The solution
+
+1. **Estimate tokens before you send.** Set `max_tokens` deliberately; the service
+   reserves it against your TPM even if the reply is short.
+2. **Retry with jitter, and honor `retry-after-ms`.** Fixed-interval retries
+   synchronize your clients into a thundering herd.
+3. **Spread load across deployments.** Put two or more deployments (in different
+   regions if your data residency allows it) behind API Management with a
+   load-balanced backend pool and circuit breaker.
+4. **Move steady workloads to provisioned throughput** once you can predict them.
+
+```bash
+az cognitiveservices account deployment show \
+  --name my-aoai --resource-group rg-ai --deployment-name gpt-4o \
+  --query "sku"
+```
+
+Check the SKU capacity first: it's often lower than people assume.
+
+## Takeaway
+
+429s are a capacity-planning signal, not a bug. Measure tokens, back off politely,
+and spread the load.

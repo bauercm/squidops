@@ -1,0 +1,45 @@
+---
+title: "Azure tagging policies that actually stick"
+date: "2026-10-08"
+summary: "Most tagging strategies die in a wiki. Enforce them with Azure Policy, inherit them from resource groups, and make cost reports trustworthy."
+relatedProduct: "azure-landing-zone-toolkit"
+---
+
+## The problem
+
+Finance asks who owns a $9,000 line item. Nobody knows, because half the resources
+have no `owner` tag and the other half say `owner: test`.
+
+Tagging guidelines that live in documentation get ignored. Tagging that's enforced at
+deploy time blocks teams and gets an exemption by Friday.
+
+## The solution
+
+Use three policy effects together:
+
+- **`modify` to inherit** `cost-center` and `env` from the resource group, so teams
+  only tag once.
+- **`deny` on resource groups** that are missing required tags. Resource groups are
+  created rarely, so the friction is low.
+- **`audit` on resources** for `owner`, then fix the gaps with a remediation task.
+
+```json
+{
+  "if": { "field": "tags['cost-center']", "exists": "false" },
+  "then": {
+    "effect": "modify",
+    "details": {
+      "operations": [{
+        "operation": "addOrReplace",
+        "field": "tags['cost-center']",
+        "value": "[resourceGroup().tags['cost-center']]"
+      }]
+    }
+  }
+}
+```
+
+## Takeaway
+
+Enforce tags where they're cheap to get right (resource groups), inherit everywhere
+else, and audit the rest.

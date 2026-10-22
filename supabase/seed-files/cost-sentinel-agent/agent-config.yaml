@@ -1,0 +1,5 @@
+# Cost Sentinel agent config (sample)
+subscription_ids: []
+daily_budget_usd: 200
+alert_channel: teams
+anomaly_threshold_pct: 25
