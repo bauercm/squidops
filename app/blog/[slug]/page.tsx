@@ -2,9 +2,9 @@ import type { Metadata } from "next";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import remarkGfm from "remark-gfm";
 import { RelatedProduct } from "@/components/related-product";
 import { getAllPosts, getPost } from "@/lib/blog";
+import { mdxComponents, mdxOptions } from "@/lib/mdx";
 import { formatDate } from "@/lib/site";
 
 export const dynamicParams = false;
@@ -32,21 +32,22 @@ export default async function BlogPost({ params }: Props) {
   if (!post) notFound();
 
   return (
-    <article>
-      <Link href="/blog" className="text-sm text-muted hover:text-fg">
-        ← Blog
+    <article className="mx-auto max-w-3xl">
+      <Link href="/blog" className="font-mono text-xs text-muted hover:text-fg">
+        ← blog
       </Link>
-      <header className="mt-4">
-        <h1 className="text-3xl font-bold tracking-tight">{post.title}</h1>
-        <time dateTime={post.date} className="mt-2 block text-sm text-muted">
-          {formatDate(post.date)}
-        </time>
+      <header className="mt-6 border-b border-border pb-8">
+        <p className="font-mono text-xs text-muted">
+          <time dateTime={post.date}>{formatDate(post.date)}</time> · {post.readingMinutes} min read
+        </p>
+        <h1 className="mt-3 text-3xl font-bold leading-tight tracking-tight sm:text-4xl">{post.title}</h1>
+        <p className="mt-4 text-lg text-muted">{post.summary}</p>
       </header>
       <div className="prose mt-8">
-        <MDXRemote source={post.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
+        <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions }} />
       </div>
       {post.relatedProduct && (
-        <div className="mt-12">
+        <div className="mt-14">
           <RelatedProduct slug={post.relatedProduct} />
         </div>
       )}
