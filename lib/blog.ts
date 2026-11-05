@@ -10,6 +10,7 @@ export type PostMeta = {
   date: string;
   summary: string;
   relatedProduct?: string;
+  readingMinutes: number;
 };
 
 export type Post = PostMeta & { content: string };
@@ -27,6 +28,7 @@ function parse(file: string): Post {
     date: data.date instanceof Date ? data.date.toISOString().slice(0, 10) : String(data.date),
     summary: String(data.summary),
     relatedProduct: data.relatedProduct ? String(data.relatedProduct) : undefined,
+    readingMinutes: Math.max(1, Math.round(content.split(/\s+/).length / 230)),
     content,
   };
 }
@@ -35,8 +37,8 @@ export function getAllPosts(): PostMeta[] {
   return readdirSync(BLOG_DIR)
     .filter((f) => f.endsWith(".mdx"))
     .map((f) => {
-      const { slug, title, date, summary, relatedProduct } = parse(f);
-      return { slug, title, date, summary, relatedProduct };
+      const { content: _content, ...meta } = parse(f); // eslint-disable-line @typescript-eslint/no-unused-vars
+      return meta;
     })
     .sort((a, b) => (a.date < b.date ? 1 : -1));
 }
