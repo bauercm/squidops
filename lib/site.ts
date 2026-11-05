@@ -21,5 +21,3 @@ export function formatDate(iso: string) {
     timeZone: "UTC",
   });
 }
-
-export const lineLabels = { toolkit: "Toolkit", course: "Course", agent: "Agent" } as const;

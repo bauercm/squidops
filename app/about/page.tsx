@@ -9,8 +9,9 @@ export const metadata: Metadata = {
 
 export default function About() {
   return (
-    <article>
-      <h1 className="text-3xl font-bold tracking-tight">About SquidOps</h1>
+    <article className="mx-auto max-w-3xl">
+      <p className="font-mono text-xs uppercase tracking-wider text-accent">About</p>
+      <h1 className="mt-2 text-4xl font-bold tracking-tight">Built in the field.</h1>
       <div className="prose mt-8">
         <p>
           SquidOps is a resource platform for engineers who build on Azure and ship AI into

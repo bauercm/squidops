@@ -1,31 +1,36 @@
 import Link from "next/link";
-import { site } from "@/lib/site";
+import { Wordmark } from "@/components/logo";
 
 const nav = [
-  { href: "/blog", label: "Blog" },
-  { href: "/products", label: "Products" },
-  { href: "/library", label: "Library" },
-  { href: "/about", label: "About" },
+  { href: "/blog", label: "Blog", className: "" },
+  { href: "/products", label: "Products", className: "" },
+  // Hidden on phones to fit the bar; About is also in the footer.
+  { href: "/about", label: "About", className: "hidden sm:inline-block" },
 ];
 
 export function Header() {
   return (
-    <header className="border-b border-border">
-      <div className="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-x-6 gap-y-2 px-4 py-4">
-        <Link href="/" className="text-lg font-bold tracking-tight">
-          <span aria-hidden>🦑 </span>
-          {site.name}
+    <header className="sticky top-0 z-20 border-b border-border bg-bg/80 backdrop-blur-md">
+      <div className="mx-auto flex max-w-5xl items-center justify-between gap-4 px-4 py-3">
+        <Link href="/" aria-label="SquidOps home">
+          <Wordmark />
         </Link>
-        <nav aria-label="Main">
-          <ul className="flex gap-5 text-sm">
-            {nav.map((item) => (
-              <li key={item.href}>
-                <Link href={item.href} className="text-muted hover:text-fg">
-                  {item.label}
-                </Link>
-              </li>
-            ))}
-          </ul>
+        <nav aria-label="Main" className="flex items-center gap-1 text-sm sm:gap-2">
+          {nav.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`rounded-md px-2 py-1.5 text-muted transition-colors hover:text-fg sm:px-3 ${item.className}`}
+            >
+              {item.label}
+            </Link>
+          ))}
+          <Link
+            href="/library"
+            className="ml-1 rounded-md border border-border px-2.5 py-1.5 font-medium transition-colors hover:border-accent hover:text-accent sm:px-3"
+          >
+            Library
+          </Link>
         </nav>
       </div>
     </header>

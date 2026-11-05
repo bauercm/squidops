@@ -2,23 +2,28 @@ import { beehiivFormUrl } from "@/lib/env";
 
 export function Newsletter() {
   return (
-    <section aria-labelledby="newsletter" className="rounded-lg border border-border bg-card p-6">
-      <h2 id="newsletter" className="text-lg font-semibold">
-        Get new guides by email
+    <section
+      aria-labelledby="newsletter"
+      className="bg-sonar overflow-hidden rounded-2xl border border-border p-6 sm:p-10"
+    >
+      <p className="font-mono text-xs uppercase tracking-wider text-accent">Newsletter</p>
+      <h2 id="newsletter" className="mt-2 text-2xl font-bold tracking-tight">
+        One field-tested fix a week.
       </h2>
-      <p className="mt-1 text-sm text-muted">
-        One practical Azure or AI engineering write-up a week. No spam, unsubscribe anytime.
+      <p className="mt-2 max-w-xl text-muted">
+        A practical Azure or AI engineering write-up in your inbox every week. No spam, unsubscribe
+        anytime.
       </p>
       {beehiivFormUrl ? (
         <iframe
           src={beehiivFormUrl}
           title="Newsletter signup"
-          className="mt-4 h-[60px] w-full border-0 bg-transparent"
+          className="mt-6 h-[60px] w-full max-w-xl border-0 bg-transparent"
           loading="lazy"
         />
       ) : (
-        <p className="mt-4 text-sm text-muted">
-          Newsletter signup is not configured (set NEXT_PUBLIC_BEEHIIV_FORM_URL).
+        <p className="mt-6 font-mono text-xs text-muted">
+          {"// signup form appears here once NEXT_PUBLIC_BEEHIIV_FORM_URL is set"}
         </p>
       )}
     </section>

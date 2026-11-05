@@ -51,9 +51,12 @@ export default async function LibraryPage({ searchParams }: Props) {
   }
 
   return (
-    <>
-      <div className="flex flex-wrap items-baseline justify-between gap-4">
-        <h1 className="text-3xl font-bold tracking-tight">Your library</h1>
+    <div className="mx-auto max-w-3xl">
+      <div className="flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p className="font-mono text-xs uppercase tracking-wider text-accent">Library</p>
+          <h1 className="mt-2 text-4xl font-bold tracking-tight">Your products</h1>
+        </div>
         <form action="/auth/signout" method="post">
           <button type="submit" className="text-sm text-muted hover:text-fg">
             Sign out ({user.email})
@@ -82,7 +85,7 @@ export default async function LibraryPage({ searchParams }: Props) {
       ) : (
         <ul className="mt-8 space-y-6">
           {purchases.map(({ id, created_at, products: product }) => (
-            <li key={id} className="rounded-lg border border-border p-5">
+            <li key={id} className="rounded-xl border border-border bg-card p-5">
               <div className="flex flex-wrap items-baseline justify-between gap-2">
                 <h2 className="font-semibold">
                   <Link href={`/products/${product.slug}`} className="hover:text-accent">
@@ -116,7 +119,7 @@ export default async function LibraryPage({ searchParams }: Props) {
           ))}
         </ul>
       )}
-      <p className="mt-8 text-xs text-muted">Download links expire after one hour. Reload for fresh ones.</p>
-    </>
+      <p className="mt-8 font-mono text-xs text-muted">Download links expire after one hour. Reload for fresh ones.</p>
+    </div>
   );
 }

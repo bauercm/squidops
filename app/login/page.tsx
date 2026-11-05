@@ -26,7 +26,7 @@ export default async function LoginPage({ searchParams }: Props) {
 
   return (
     <div className="mx-auto max-w-sm">
-      <h1 className="text-2xl font-bold tracking-tight">Sign in</h1>
+      <h1 className="text-3xl font-bold tracking-tight">Sign in</h1>
       <p className="mt-2 text-sm text-muted">
         Sign in to download the products you own. No password needed.
       </p>
