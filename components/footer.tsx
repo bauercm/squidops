@@ -1,8 +1,19 @@
 import Link from "next/link";
 import { SquidMark } from "@/components/logo";
-import { site } from "@/lib/site";
+import { site, storeEnabled } from "@/lib/site";
 
-const columns = [
+const blogOnlyColumns = [
+  {
+    title: "Learn",
+    links: [
+      { href: "/blog", label: "Blog" },
+      { href: "/feed.xml", label: "RSS feed" },
+      { href: "/about", label: "About" },
+    ],
+  },
+];
+
+const storeColumns = [
   {
     title: "Learn",
     links: [
@@ -28,10 +39,16 @@ const columns = [
   },
 ];
 
+const columns = storeEnabled ? storeColumns : blogOnlyColumns;
+
 export function Footer() {
   return (
     <footer className="mt-24 border-t border-border">
-      <div className="mx-auto grid max-w-5xl gap-10 px-4 py-12 sm:grid-cols-[1.5fr_repeat(3,1fr)]">
+      <div
+        className={`mx-auto grid max-w-5xl gap-10 px-4 py-12 ${
+          storeEnabled ? "sm:grid-cols-[1.5fr_repeat(3,1fr)]" : "sm:grid-cols-[3fr_1fr]"
+        }`}
+      >
         <div>
           <SquidMark className="h-8 w-8 text-accent" />
           <p className="mt-3 max-w-xs text-sm text-muted">{site.tagline}</p>

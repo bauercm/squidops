@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { storeEnabled } from "@/lib/site";
 import { ArrowRightIcon, CheckIcon, FileIcon } from "@/components/icons";
 import { Markdown } from "@/components/markdown";
 import { LineBadge } from "@/components/product-line";
@@ -10,6 +11,7 @@ import { formatPrice } from "@/lib/site";
 export const revalidate = 300;
 
 export async function generateStaticParams() {
+  if (!storeEnabled) return [];
   return (await getLiveProducts()).map((p) => ({ slug: p.slug }));
 }
 
@@ -35,6 +37,7 @@ const steps = [
 ];
 
 export default async function ProductPage({ params }: Props) {
+  if (!storeEnabled) notFound();
   const { slug } = await params;
   const product = await getProduct(slug);
   if (!product) notFound();

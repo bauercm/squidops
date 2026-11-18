@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { redirect } from "next/navigation";
-import { formatDate } from "@/lib/site";
+import { notFound, redirect } from "next/navigation";
+import { formatDate, storeEnabled } from "@/lib/site";
 import { createClient } from "@/lib/supabase/server";
 import { PRODUCT_FILES_BUCKET, type Product, type ProductFile } from "@/lib/types";
 
@@ -20,6 +20,7 @@ type PurchaseRow = { id: string; created_at: string; products: OwnedProduct };
 type Props = { searchParams: Promise<{ checkout?: string }> };
 
 export default async function LibraryPage({ searchParams }: Props) {
+  if (!storeEnabled) notFound();
   const { checkout } = await searchParams;
   const supabase = await createClient();
   const {

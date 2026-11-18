@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { RelatedProduct } from "@/components/related-product";
 import { getAllPosts, getPost } from "@/lib/blog";
 import { mdxComponents, mdxOptions } from "@/lib/mdx";
-import { formatDate } from "@/lib/site";
+import { formatDate, storeEnabled } from "@/lib/site";
 
 export const dynamicParams = false;
 export const revalidate = 300; // keeps the related-product callout fresh
@@ -46,7 +46,7 @@ export default async function BlogPost({ params }: Props) {
       <div className="prose mt-8">
         <MDXRemote source={post.content} components={mdxComponents} options={{ mdxOptions }} />
       </div>
-      {post.relatedProduct && (
+      {storeEnabled && post.relatedProduct && (
         <div className="mt-14">
           <RelatedProduct slug={post.relatedProduct} />
         </div>

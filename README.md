@@ -6,6 +6,11 @@ Resource platform for Azure and AI engineers: free MDX blog posts plus paid digi
 **Stack:** Next.js 15 (App Router, TypeScript, Tailwind v4) on Vercel · Supabase (Postgres,
 Auth, Storage, RLS) · Stripe Checkout · MDX in `content/blog` · beehiiv (newsletter only).
 
+> **Blog-only for now.** `storeEnabled` in `lib/site.ts` is `false`, which hides the Products and
+> Library links, the store sections of the home and About pages, and returns 404 for `/products`,
+> `/library`, `/login` and `POST /api/checkout`. The store code below is intact: set it to `true`
+> and mark products `status = 'live'` in Supabase to turn the store back on.
+
 ## How it fits together
 
 | Path | What it does |

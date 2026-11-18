@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { getProduct } from "@/lib/products";
+import { storeEnabled } from "@/lib/site";
 import { stripe } from "@/lib/stripe";
 import { createClient } from "@/lib/supabase/server";
 
@@ -7,6 +8,9 @@ export const runtime = "nodejs";
 
 // Form POST from a product page. Redirects (303) to Stripe Checkout.
 export async function POST(request: NextRequest) {
+  if (!storeEnabled) {
+    return NextResponse.json({ error: "Not found" }, { status: 404 });
+  }
   const origin = request.nextUrl.origin;
   const form = await request.formData();
   const slug = String(form.get("slug") ?? "");

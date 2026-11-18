@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { storeEnabled } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "About",
-  description: "What SquidOps is, who it's for, and how the products work.",
+  description: storeEnabled
+    ? "What SquidOps is, who it's for, and how the products work."
+    : "What SquidOps is and who it's for.",
   alternates: { canonical: "/about" },
 };
 
@@ -25,24 +28,38 @@ export default function About() {
             <strong>Free guides.</strong> Every <Link href="/blog">blog post</Link> starts from a
             real problem and ends with a working fix.
           </li>
-          <li>
-            <strong>Toolkits.</strong> Infrastructure-as-code modules, policies, and runbooks you
-            can adapt to your tenant.
-          </li>
-          <li>
-            <strong>Courses.</strong> Self-paced, written material for going deeper on one topic.
-          </li>
-          <li>
-            <strong>Agents.</strong> Small AI agents that run in your own subscription and do one
-            job well.
-          </li>
+          {storeEnabled ? (
+            <>
+              <li>
+                <strong>Toolkits.</strong> Infrastructure-as-code modules, policies, and runbooks
+                you can adapt to your tenant.
+              </li>
+              <li>
+                <strong>Courses.</strong> Self-paced, written material for going deeper on one
+                topic.
+              </li>
+              <li>
+                <strong>Agents.</strong> Small AI agents that run in your own subscription and do
+                one job well.
+              </li>
+            </>
+          ) : (
+            <li>
+              <strong>The Tuesday Plan.</strong> A weekly newsletter that works through one real
+              decision per issue. Sign up on the <Link href="/#newsletter">home page</Link>.
+            </li>
+          )}
         </ul>
-        <h2>How purchases work</h2>
-        <p>
-          Products are one-time purchases through Stripe. After checkout, everything you own is in
-          your <Link href="/library">library</Link>, including future updates to the same version
-          line.
-        </p>
+        {storeEnabled && (
+          <>
+            <h2>How purchases work</h2>
+            <p>
+              Products are one-time purchases through Stripe. After checkout, everything you own
+              is in your <Link href="/library">library</Link>, including future updates to the
+              same version line.
+            </p>
+          </>
+        )}
         <h2>Stay in the loop</h2>
         <p>
           New guides go out through the newsletter on the <Link href="/">home page</Link> and the{" "}

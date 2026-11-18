@@ -27,9 +27,11 @@ export function Terminal({ posts, products }: { posts: PostMeta[]; products: Pro
             <span className="truncate group-hover:underline">{p.title}</span>
           </Link>
         ))}
-        <p className="pt-3">
-          <span className="text-accent">$</span> squidops products
-        </p>
+        {products.length > 0 && (
+          <p className="pt-3">
+            <span className="text-accent">$</span> squidops products
+          </p>
+        )}
         {products.map((p) => (
           <Link
             key={p.slug}

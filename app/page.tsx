@@ -7,13 +7,14 @@ import { productLines } from "@/components/product-line";
 import { Terminal } from "@/components/terminal";
 import { getAllPosts } from "@/lib/blog";
 import { getLiveProducts } from "@/lib/products";
+import { storeEnabled } from "@/lib/site";
 import type { ProductLine } from "@/lib/types";
 
 export const revalidate = 300;
 
 export default async function Home() {
   const posts = getAllPosts().slice(0, 3);
-  const products = await getLiveProducts(3);
+  const products = storeEnabled ? await getLiveProducts(3) : [];
 
   return (
     <div className="space-y-20 sm:space-y-24">
@@ -27,8 +28,9 @@ export default async function Home() {
               Ship Azure and AI systems that hold up in production.
             </h1>
             <p className="mt-5 max-w-xl text-lg text-muted">
-              Free, problem-first guides from the field, plus toolkits, courses, and agents you can
-              drop into your own tenant.
+              {storeEnabled
+                ? "Free, problem-first guides from the field, plus toolkits, courses, and agents you can drop into your own tenant."
+                : "Free, problem-first guides from the field: the real problem, the fix, and the commands."}
             </p>
             <div className="mt-8 flex flex-wrap gap-3">
               <Link
@@ -39,10 +41,10 @@ export default async function Home() {
                 <ArrowRightIcon className="h-4 w-4" />
               </Link>
               <Link
-                href="/products"
+                href={storeEnabled ? "/products" : "#newsletter"}
                 className="rounded-lg border border-border bg-bg/60 px-5 py-2.5 font-semibold transition-colors hover:border-accent"
               >
-                Browse products
+                {storeEnabled ? "Browse products" : "Get the newsletter"}
               </Link>
             </div>
           </div>
@@ -50,31 +52,33 @@ export default async function Home() {
         </div>
       </section>
 
-      <section aria-labelledby="what">
-        <SectionHeading id="what" eyebrow="What's here" title="Everything an engineer needs, nothing they don't." />
-        <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          <Pillar
-            href="/blog"
-            title="Free guides"
-            body="Real problems, the fix, and the commands. Every post is free, forever."
-            icon={<BookIcon className="h-6 w-6" />}
-            tone="text-accent"
-          />
-          {(Object.keys(productLines) as ProductLine[]).map((line) => {
-            const { plural, blurb, text, Icon } = productLines[line];
-            return (
-              <Pillar
-                key={line}
-                href={`/products#${line}`}
-                title={plural}
-                body={blurb}
-                icon={<Icon className="h-6 w-6" />}
-                tone={text}
-              />
-            );
-          })}
-        </ul>
-      </section>
+      {storeEnabled && (
+        <section aria-labelledby="what">
+          <SectionHeading id="what" eyebrow="What's here" title="Everything an engineer needs, nothing they don't." />
+          <ul className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            <Pillar
+              href="/blog"
+              title="Free guides"
+              body="Real problems, the fix, and the commands. Every post is free, forever."
+              icon={<BookIcon className="h-6 w-6" />}
+              tone="text-accent"
+            />
+            {(Object.keys(productLines) as ProductLine[]).map((line) => {
+              const { plural, blurb, text, Icon } = productLines[line];
+              return (
+                <Pillar
+                  key={line}
+                  href={`/products#${line}`}
+                  title={plural}
+                  body={blurb}
+                  icon={<Icon className="h-6 w-6" />}
+                  tone={text}
+                />
+              );
+            })}
+          </ul>
+        </section>
+      )}
 
       {posts.length > 0 && (
         <section aria-labelledby="latest">

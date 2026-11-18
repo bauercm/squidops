@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { Wordmark } from "@/components/logo";
+import { storeEnabled } from "@/lib/site";
 
 const nav = [
   { href: "/blog", label: "Blog", className: "" },
-  { href: "/products", label: "Products", className: "" },
-  // Hidden on phones to fit the bar; About is also in the footer.
-  { href: "/about", label: "About", className: "hidden sm:inline-block" },
+  ...(storeEnabled ? [{ href: "/products", label: "Products", className: "" }] : []),
+  // Hidden on phones to fit the bar when the store is on; About is also in the footer.
+  { href: "/about", label: "About", className: storeEnabled ? "hidden sm:inline-block" : "" },
 ];
 
 export function Header() {
@@ -25,12 +26,14 @@ export function Header() {
               {item.label}
             </Link>
           ))}
-          <Link
-            href="/library"
-            className="ml-1 rounded-md border border-border px-2.5 py-1.5 font-medium transition-colors hover:border-accent hover:text-accent sm:px-3"
-          >
-            Library
-          </Link>
+          {storeEnabled && (
+            <Link
+              href="/library"
+              className="ml-1 rounded-md border border-border px-2.5 py-1.5 font-medium transition-colors hover:border-accent hover:text-accent sm:px-3"
+            >
+              Library
+            </Link>
+          )}
         </nav>
       </div>
     </header>

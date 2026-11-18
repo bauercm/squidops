@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
+import { notFound } from "next/navigation";
 import { ProductCard } from "@/components/product-card";
 import { productLines } from "@/components/product-line";
 import { getLiveProducts } from "@/lib/products";
+import { storeEnabled } from "@/lib/site";
 import type { ProductLine } from "@/lib/types";
 
 export const revalidate = 300;
@@ -13,6 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default async function Products() {
+  if (!storeEnabled) notFound();
   const products = await getLiveProducts();
   const lines = (Object.keys(productLines) as ProductLine[]).filter((line) =>
     products.some((p) => p.line === line),

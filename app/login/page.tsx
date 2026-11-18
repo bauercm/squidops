@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
-import { redirect } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { safeNext } from "@/lib/redirect";
+import { storeEnabled } from "@/lib/site";
 import { createClient } from "@/lib/supabase/server";
 import { LoginForm } from "./login-form";
 
@@ -14,6 +15,7 @@ type Props = {
 };
 
 export default async function LoginPage({ searchParams }: Props) {
+  if (!storeEnabled) notFound();
   const params = await searchParams;
   // Origin is irrelevant here: only relative paths pass.
   const next = safeNext(params.next ?? null, "null");
