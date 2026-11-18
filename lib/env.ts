@@ -4,7 +4,19 @@ function required(name: string, value: string | undefined): string {
   return value;
 }
 
-export const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000").replace(/\/$/, "");
+// Accepts "squidops.vercel.app" as well as "https://squidops.vercel.app/": a bare host would
+// otherwise make `new URL()` in the root layout throw and fail the whole build.
+function normalizeSiteUrl(raw: string): string {
+  const value = raw.trim().replace(/\/+$/, "");
+  const withScheme = /^https?:\/\//i.test(value) ? value : `https://${value}`;
+  try {
+    return new URL(withScheme).origin;
+  } catch {
+    throw new Error(`NEXT_PUBLIC_SITE_URL is not a valid URL: "${raw}"`);
+  }
+}
+
+export const siteUrl = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000");
 
 export const supabaseUrl = () =>
   required("NEXT_PUBLIC_SUPABASE_URL", process.env.NEXT_PUBLIC_SUPABASE_URL);
