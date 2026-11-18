@@ -123,7 +123,8 @@ Create a GitHub OAuth app with callback `http://127.0.0.1:54321/auth/v1/callback
 
 1. Import the repo (framework preset: Next.js).
 2. Add every variable from `.env.example` for Production (and Preview with test keys).
-   `NEXT_PUBLIC_SITE_URL` must be the production URL.
+   `NEXT_PUBLIC_SITE_URL` must be the production URL. When it is a custom domain,
+   `next.config.ts` permanently redirects `squidops.vercel.app` to it.
 3. Deploy. The webhook route exports `runtime = "nodejs"` (never Edge) and `vercel.json` gives
    it a 30s max duration.
 
