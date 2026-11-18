@@ -17,4 +17,10 @@ export const stripeSecretKey = () => required("STRIPE_SECRET_KEY", process.env.S
 export const stripeWebhookSecret = () =>
   required("STRIPE_WEBHOOK_SECRET", process.env.STRIPE_WEBHOOK_SECRET);
 
-export const beehiivFormUrl = process.env.NEXT_PUBLIC_BEEHIIV_FORM_URL ?? "";
+// Server only. The signup form renders only when both are set.
+export const beehiivApiKey = () => required("BEEHIIV_API_KEY", process.env.BEEHIIV_API_KEY);
+export const beehiivPublicationId = () =>
+  required("BEEHIIV_PUBLICATION_ID", process.env.BEEHIIV_PUBLICATION_ID);
+export const newsletterEnabled = Boolean(
+  process.env.BEEHIIV_API_KEY && process.env.BEEHIIV_PUBLICATION_ID,
+);

@@ -76,14 +76,16 @@ export default async function Home() {
         </ul>
       </section>
 
-      <section aria-labelledby="latest">
-        <SectionHeading id="latest" eyebrow="From the blog" title="Latest guides" href="/blog" linkLabel="All posts" />
-        <div className="mt-8 grid gap-4 md:grid-cols-3">
-          {posts.map((post) => (
-            <PostCard key={post.slug} post={post} />
-          ))}
-        </div>
-      </section>
+      {posts.length > 0 && (
+        <section aria-labelledby="latest">
+          <SectionHeading id="latest" eyebrow="From the blog" title="Latest guides" href="/blog" linkLabel="All posts" />
+          <div className="mt-8 grid gap-4 md:grid-cols-3">
+            {posts.map((post) => (
+              <PostCard key={post.slug} post={post} />
+            ))}
+          </div>
+        </section>
+      )}
 
       {products.length > 0 && (
         <section aria-labelledby="featured">

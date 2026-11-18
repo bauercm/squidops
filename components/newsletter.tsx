@@ -1,4 +1,5 @@
-import { beehiivFormUrl } from "@/lib/env";
+import { newsletterEnabled } from "@/lib/env";
+import { NewsletterForm } from "./newsletter-form";
 
 export function Newsletter() {
   return (
@@ -14,16 +15,11 @@ export function Newsletter() {
         A practical Azure or AI engineering write-up in your inbox every week. No spam, unsubscribe
         anytime.
       </p>
-      {beehiivFormUrl ? (
-        <iframe
-          src={beehiivFormUrl}
-          title="Newsletter signup"
-          className="mt-6 h-[60px] w-full max-w-xl border-0 bg-transparent"
-          loading="lazy"
-        />
+      {newsletterEnabled ? (
+        <NewsletterForm />
       ) : (
         <p className="mt-6 font-mono text-xs text-muted">
-          {"// signup form appears here once NEXT_PUBLIC_BEEHIIV_FORM_URL is set"}
+          {"// signup form appears here once BEEHIIV_API_KEY and BEEHIIV_PUBLICATION_ID are set"}
         </p>
       )}
     </section>

@@ -33,8 +33,18 @@ function parse(file: string): Post {
   };
 }
 
+// No content/blog folder (e.g. before the first post) means no posts, not a crash.
+function listPostFiles(): string[] {
+  try {
+    return readdirSync(BLOG_DIR);
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === "ENOENT") return [];
+    throw err;
+  }
+}
+
 export function getAllPosts(): PostMeta[] {
-  return readdirSync(BLOG_DIR)
+  return listPostFiles()
     .filter((f) => f.endsWith(".mdx"))
     .map((f) => {
       const { content: _content, ...meta } = parse(f); // eslint-disable-line @typescript-eslint/no-unused-vars

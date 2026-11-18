@@ -4,7 +4,7 @@ Resource platform for Azure and AI engineers: free MDX blog posts plus paid digi
 (toolkits, courses, agents) sold with Stripe Checkout and delivered from Supabase Storage.
 
 **Stack:** Next.js 15 (App Router, TypeScript, Tailwind v4) on Vercel · Supabase (Postgres,
-Auth, Storage, RLS) · Stripe Checkout · MDX in `content/blog` · beehiiv embed.
+Auth, Storage, RLS) · Stripe Checkout · MDX in `content/blog` · beehiiv (newsletter only).
 
 ## How it fits together
 
@@ -15,7 +15,8 @@ Auth, Storage, RLS) · Stripe Checkout · MDX in `content/blog` · beehiiv embed
 | `POST /api/stripe/webhook` | Node runtime. Verifies the signature, and on `checkout.session.completed` (paid) finds or creates the user, inserts the purchase (idempotent on `user_id, product_id`) and, for guest checkouts, emails a magic link. |
 | `/library` | Signed-in only. Lists purchases joined to `product_files` (RLS: own rows only) and creates 1-hour signed download URLs. Storage RLS only lets buyers sign files of products they own. |
 | `/login` | Magic link or GitHub. `/auth/confirm` verifies magic links (token hash), `/auth/callback` finishes OAuth. |
-| `/feed.xml`, `/sitemap.xml`, `/robots.txt` | SEO. |
+| `POST /api/newsletter` | JSON post from the home page signup form. Validates the email, drops honeypot hits, and creates a beehiiv subscription with the server-side API key (welcome email on, re-subscribes people who left). The form only renders when `BEEHIIV_API_KEY` and `BEEHIIV_PUBLICATION_ID` are set. |
+| `/feed.xml`, `/sitemap.xml`, `/robots.txt` | SEO. beehiiv can read `/feed.xml` for RSS-to-send. |
 
 Database schema and policies live in `supabase/migrations`. All writes go through the service
 role (webhook, seed script, Supabase dashboard); `anon`/`authenticated` have select-only access.

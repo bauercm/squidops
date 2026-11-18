@@ -27,6 +27,12 @@ export default function BlogIndex() {
         </p>
       </header>
 
+      {!latest && (
+        <p className="mt-10 rounded-2xl border border-border p-6 font-mono text-sm text-muted sm:p-8">
+          {"// first guide ships soon"}
+        </p>
+      )}
+
       {latest && (
         <Link
           href={`/blog/${latest.slug}`}

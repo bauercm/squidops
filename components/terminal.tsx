@@ -18,6 +18,7 @@ export function Terminal({ posts, products }: { posts: PostMeta[]; products: Pro
         <p>
           <span className="text-accent">$</span> squidops guides --latest
         </p>
+        {posts.length === 0 && <p className="text-muted">{"// first guide ships soon"}</p>}
         {posts.map((p) => (
           <Link key={p.slug} href={`/blog/${p.slug}`} className="group flex gap-2 text-muted hover:text-fg">
             <span aria-hidden className="text-accent">
