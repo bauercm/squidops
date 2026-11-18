@@ -60,8 +60,8 @@ On Node 20, run `NODE_OPTIONS=--experimental-websocket npm run seed` instead: su
 the global `WebSocket` that Node 22 provides.
 
 Upserts 3 live sample products (one toolkit, one course, one agent) and uploads their sample
-files from `supabase/seed-files` to the private `product-files` bucket. Safe to re-run. The 2
-sample posts are already in `content/blog`.
+files from `supabase/seed-files` to the private `product-files` bucket. Safe to re-run. There
+are no sample posts; the blog shows an empty state until the first `content/blog/*.mdx` exists.
 
 ### 3. Stripe
 
