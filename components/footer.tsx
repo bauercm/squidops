@@ -69,9 +69,14 @@ export function Footer() {
         ))}
       </div>
       <div className="border-t border-border">
-        <p className="mx-auto max-w-5xl px-4 py-5 font-mono text-xs text-muted">
-          © {new Date().getFullYear()} {site.name}
-        </p>
+        <div className="mx-auto flex max-w-5xl flex-wrap items-center justify-between gap-3 px-4 py-5 font-mono text-xs text-muted">
+          <p>
+            © {new Date().getFullYear()} {site.name}
+          </p>
+          <Link href="/privacy" className="hover:text-accent">
+            Privacy
+          </Link>
+        </div>
       </div>
     </footer>
   );

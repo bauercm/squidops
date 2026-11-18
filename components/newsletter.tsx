@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { newsletterEnabled } from "@/lib/env";
 import { NewsletterForm } from "./newsletter-form";
 
@@ -16,7 +17,16 @@ export function Newsletter() {
         anytime.
       </p>
       {newsletterEnabled ? (
-        <NewsletterForm />
+        <>
+          <NewsletterForm />
+          <p className="mt-3 text-xs text-muted">
+            Your email is used only for the newsletter. See the{" "}
+            <Link href="/privacy" className="underline hover:text-accent">
+              privacy policy
+            </Link>
+            .
+          </p>
+        </>
       ) : (
         <p className="mt-6 font-mono text-xs text-muted">
           {"// signup form appears here once BEEHIIV_API_KEY and BEEHIIV_PUBLICATION_ID are set"}
